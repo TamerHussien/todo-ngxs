@@ -1,0 +1,28 @@
+<footer id="footer" class="footer" *ngIf="facadeService.shouldFooterShow$ | async">
+  <span id="todo-count" class="todo-count">{{ facadeService.countUnCompleteTodos$ | async }} items left</span>
+  <ul id="filters" class="filters">
+    <li>
+      <a
+        [routerLink]="['/']"
+        [class.selected]="(facadeService.currentFilter$ | async) == 'SHOW_ALL'">
+        All
+      </a>
+    </li>
+    <li>
+      <a
+        [routerLink]="['/','active']"
+        [class.selected]="(facadeService.currentFilter$ | async) == 'SHOW_ACTIVE'">
+        Active
+      </a>
+    </li>
+    <li>
+      <a
+        [routerLink]="['/','completed']"
+        [class.selected]="(facadeService.currentFilter$ | async) == 'SHOW_COMPLETED'">
+        Completed
+      </a>
+    </li>
+  </ul>
+  <button id="clear-completed" class="clear-completed" (click)="facadeService.clearCompleted()">Clear completed</button>
+</footer>
+{{(facadeService.curren$ | async)}}
