@@ -10,10 +10,11 @@ import {
     ToggleTodo,
     UpdateTodo
 } from '../store/todo.actions';
-import { Observable } from 'rxjs';
+import { combineLatest, merge, Observable } from 'rxjs';
 import { Todo } from '../models';
 import { map } from 'rxjs/operators';
 import { Dispatch } from '@ngxs-labs/dispatch-decorator';
+import { filter } from 'rxjs/internal/operators/filter';
 
 @Injectable({
     providedIn: 'root'
@@ -23,11 +24,13 @@ export class FacadeService {
     @Select(TodoState.getVisibleTodos) todos$: Observable<Todo[]>;
     @Select(TodoState.getStateCompleted) stateCompleted$: Observable<Todo[]>;
     @Select(TodoState.getStateUnCompleted) stateUnCompleted$: Observable<Todo[]>;
+    @Select(TodoState.getCompletedTodo) getCompletedTodo$: Observable<Todo[]>;
     @Select(TodoState.getFilter) currentFilter$: Observable<string>;
 
     countAllTodos$ = this.allTodos$.pipe(map((todos: Todo[]) => todos.length));
     countUnCompleteTodos$ = this.stateUnCompleted$.pipe(map((todos: Todo[]) => todos.length));
     shouldFooterShow$ = this.countAllTodos$.pipe(map((count: number) => (count ? true : false)));
+    existCompleteTodos$ = this.getCompletedTodo$.pipe(map((todos: Todo[]) => (todos.length ? true : false)));
 
     @Dispatch()
     clearCompleted = () => new ClearCompleted();

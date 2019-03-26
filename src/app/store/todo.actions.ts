@@ -1,4 +1,5 @@
 import { Todo } from '../models';
+import { TodoUpdate } from '../utils';
 
 export enum ActionsType {
     ADD_TODO = '[TODO] add',
@@ -33,7 +34,7 @@ export class ToggleTodo {
 
 export class UpdateTodo {
     public static readonly type = ActionsType.UPDATE_TODO;
-    constructor(public payload: { id: number; text: string }) {}
+    constructor(public payload: TodoUpdate) {}
 }
 
 export class ClearCompleted {

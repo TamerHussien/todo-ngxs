@@ -58,6 +58,11 @@ export class TodoState {
         return state.todos.filter(t => !t.completed);
     }
 
+    @Selector()
+    static getCompletedTodo(state: TodoStateModel) {
+        return state.todos.filter(t => t.completed);
+    }
+
     @Action(AddTodo)
     add(ctx: StateContext<TodoStateModel>, { payload }: AddTodo) {
         ctx.setState(patch({ todos: append([{ id: Math.random(), text: payload, completed: false }]) }));

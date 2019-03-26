@@ -2,8 +2,9 @@ import { BrowserModule } from '@angular/platform-browser';
 import { NgModule } from '@angular/core';
 import { AppComponent } from './app.component';
 import * as fromComponents from './components';
+import * as fromContainers from './containers';
 import { RouterModule, Routes } from '@angular/router';
-import { TodoListComponent } from './components';
+import { TodoListComponent } from './containers';
 import { ReactiveFormsModule } from '@angular/forms';
 import { NgxsModule } from '@ngxs/store';
 import { NgxsReduxDevtoolsPluginModule } from '@ngxs/devtools-plugin';
@@ -16,7 +17,7 @@ const routes: Routes = [
 ];
 
 @NgModule({
-    declarations: [AppComponent, ...fromComponents.components],
+    declarations: [AppComponent, ...fromComponents.components, ...fromContainers.containers],
     imports: [
         BrowserModule,
         ReactiveFormsModule,

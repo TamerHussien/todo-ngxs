@@ -1,21 +1,23 @@
-import { Component } from '@angular/core';
+import { ChangeDetectionStrategy, Component, EventEmitter, Output } from '@angular/core';
 import { FormControl, Validators } from '@angular/forms';
-import { FacadeService } from '../../services';
 
 @Component({
     selector: 'app-new-todo',
-    templateUrl: './new-todo.component.html'
+    templateUrl: './new-todo.component.html',
+    changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class NewTodoComponent {
     textField: FormControl;
+    @Output() addTodo: EventEmitter<string>;
 
-    constructor(public facadeService: FacadeService) {
+    constructor() {
         this.textField = new FormControl('', [Validators.required]);
+        this.addTodo = new EventEmitter<string>();
     }
 
-    saveTodo() {
+    handleSaveTodo() {
         if (this.textField.valid) {
-            this.facadeService.addTodo(this.textField.value);
+            this.addTodo.emit(this.textField.value);
             this.textField.setValue('', { emitEvent: false });
         }
     }
