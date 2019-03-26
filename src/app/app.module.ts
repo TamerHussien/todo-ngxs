@@ -10,7 +10,6 @@ import { NgxsReduxDevtoolsPluginModule } from '@ngxs/devtools-plugin';
 import { TodoState } from './store/todo.state';
 import { NgxsEmitPluginModule } from '@ngxs-labs/emitter';
 import { NgxsDispatchPluginModule } from '@ngxs-labs/dispatch-decorator';
-
 const routes: Routes = [
     { path: '', component: TodoListComponent, pathMatch: 'full' },
     { path: ':filter', component: TodoListComponent }
