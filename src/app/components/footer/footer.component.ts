@@ -21,4 +21,8 @@ export class FooterComponent {
     handleClick(): void {
         this.clearCompleted.emit();
     }
+
+    get shouldHiddenClearButtom(): boolean {
+        return !this.existCompleteTodos;
+    }
 }

@@ -2,26 +2,17 @@
     <span id="todo-count" class="todo-count">{{ countUnCompleteTodos }} items left</span>
     <ul id="filters" class="filters">
         <li>
-            <a
-                    [routerLink]="['/']"
-                    [class.selected]="currentFilter == FilterType.SHOW_ALL">
-                All
-            </a>
+            <a [routerLink]="['/']" [class.selected]="currentFilter == FilterType.SHOW_ALL"> All </a>
         </li>
         <li>
-            <a
-                    [routerLink]="['/','active']"
-                    [class.selected]="currentFilter == FilterType.SHOW_ACTIVE">
-                Active
-            </a>
+            <a [routerLink]="['/','active']" [class.selected]="currentFilter == FilterType.SHOW_ACTIVE">Active</a>
         </li>
         <li>
-            <a
-                    [routerLink]="['/','completed']"
-                    [class.selected]="currentFilter == FilterType.SHOW_COMPLETED">
-                Completed
-            </a>
+            <a [routerLink]="['/','completed']"
+               [class.selected]="currentFilter == FilterType.SHOW_COMPLETED">Completed</a>
         </li>
     </ul>
-    <button id="clear-completed" class="clear-completed" (click)="handleClick()" [hidden]="!existCompleteTodos">Clear completed</button>
+    <button id="clear-completed" class="clear-completed" (click)="handleClick()" [hidden]="shouldHiddenClearButtom">
+        Clear completed
+    </button>
 </footer>
