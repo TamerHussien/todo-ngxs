@@ -1,6 +1,11 @@
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 
 import { PrincipalComponent } from './principal.component';
+import { FooterComponent, NewTodoComponent } from '../../components';
+import { ReactiveFormsModule } from '@angular/forms';
+import { RouterModule } from '@angular/router';
+import { NgxsModule } from '@ngxs/store';
+import { TodoState } from '../../store/todo.state';
 
 describe('PrincipalComponent', () => {
     let component: PrincipalComponent;
@@ -8,7 +13,8 @@ describe('PrincipalComponent', () => {
 
     beforeEach(async(() => {
         TestBed.configureTestingModule({
-            declarations: [PrincipalComponent]
+            declarations: [PrincipalComponent, NewTodoComponent, FooterComponent],
+            imports: [RouterModule, ReactiveFormsModule, NgxsModule.forRoot([TodoState])]
         }).compileComponents();
     }));
 
