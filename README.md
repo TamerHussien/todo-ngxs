@@ -6,5 +6,7 @@
 # State Manager Library
 [NGXS](https://ngxs.gitbook.io/ngxs) is modeled after the CQRS pattern popularly implemented in libraries like Redux and NgRx but reduces boilerplate by using modern TypeScript features such as classes and decorators.
 
+![Gif](https://github.com/mailok/todo-ngxs/blob/master/todo-ngxs.gif)
+
 
 
