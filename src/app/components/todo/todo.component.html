@@ -1,9 +1,9 @@
 <li [class.completed]="todo.completed" [class.editing]="editing">
     <div class="view">
-        <input class="toggle" type="checkbox" [formControl]="checkField"/>
-        <label (dblclick)="activeEditMode()">{{ todo.text }}</label>
-        <button class="destroy" (click)="handleDeleteTodo()"></button>
+        <input class="toggle" type="checkbox" [formControl]="toggleInputControl"/>
+        <label (dblclick)="activeEditMode$.next()">{{ todo.text }}</label>
+        <button class="destroy" (click)="deleteTodo.emit(todo.id)"></button>
     </div>
-    <input class="edit" type="text" #textInput (keyup.enter)="handleUpdateText()" (blur)="handleUpdateText()"
-           [formControl]="textField" [hidden]="editing"/>
+    <input class="edit" type="text" #updateInput (keyup.enter)="updateTodo$.next()" (blur)="updateTodo$.next()"
+           [formControl]="updateInputControl" [hidden]="editing"/>
 </li>

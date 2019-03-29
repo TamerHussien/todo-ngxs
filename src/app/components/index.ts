@@ -7,3 +7,4 @@ export const components: any[] = [FooterComponent, NewTodoComponent, TodoCompone
 export * from './footer/footer.component';
 export * from './new-todo/new-todo.component';
 export * from './todo/todo.component';
+export * from './test-host/test-host.component';

@@ -16,10 +16,7 @@ export class FooterComponent {
 
     constructor() {
         this.clearCompleted = new EventEmitter();
-    }
-
-    handleClick(): void {
-        this.clearCompleted.emit();
+        this.currentFilter = FilterType.SHOW_ALL;
     }
 
     get shouldHiddenClearButtom(): boolean {

@@ -12,7 +12,7 @@
                [class.selected]="currentFilter == FilterType.SHOW_COMPLETED">Completed</a>
         </li>
     </ul>
-    <button id="clear-completed" class="clear-completed" (click)="handleClick()" [hidden]="shouldHiddenClearButtom">
+    <button id="clear-completed" class="clear-completed" (click)="clearCompleted.emit()" [hidden]="shouldHiddenClearButtom">
         Clear completed
     </button>
 </footer>
