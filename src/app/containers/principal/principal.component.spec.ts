@@ -1,22 +1,30 @@
-import { async, ComponentFixture, TestBed } from '@angular/core/testing';
-
+import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { PrincipalComponent } from './principal.component';
 import { FooterComponent, NewTodoComponent } from '../../components';
-import { ReactiveFormsModule } from '@angular/forms';
-import { RouterModule } from '@angular/router';
-import { NgxsModule } from '@ngxs/store';
-import { TodoState } from '../../store/todo.state';
+import { FacadeService } from '../../services';
+import { NO_ERRORS_SCHEMA } from '@angular/core';
 
 describe('PrincipalComponent', () => {
     let component: PrincipalComponent;
     let fixture: ComponentFixture<PrincipalComponent>;
 
-    beforeEach(async(() => {
+    const facadeServiceStub = {
+        addTodo: (todo: string): any => {},
+        clearCompleted: (): void => {}
+    };
+
+    beforeEach(() => {
         TestBed.configureTestingModule({
             declarations: [PrincipalComponent, NewTodoComponent, FooterComponent],
-            imports: [RouterModule, ReactiveFormsModule, NgxsModule.forRoot([TodoState])]
-        }).compileComponents();
-    }));
+            providers: [
+                {
+                    provide: FacadeService,
+                    useValue: facadeServiceStub
+                }
+            ],
+            schemas: [NO_ERRORS_SCHEMA]
+        });
+    });
 
     beforeEach(() => {
         fixture = TestBed.createComponent(PrincipalComponent);

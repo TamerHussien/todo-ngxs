@@ -6,6 +6,7 @@ import { withLatestFrom } from 'rxjs/internal/operators/withLatestFrom';
 import { Destroy } from 'ngx-reactivetoolkit';
 import { takeUntil } from 'rxjs/operators';
 import { NextObserver } from 'rxjs/src/internal/types';
+import { mapPosition } from '../../utils';
 
 @Component({
     selector: 'app-new-todo',
@@ -16,7 +17,7 @@ export class NewTodoComponent implements OnInit, OnDestroy {
     textField: FormControl;
     newTodos$: Observable<string>;
     keyUpEnter$: Subject<void>;
-    addTodoObserver: NextObserver<[void, string]>;
+    addTodoObserver: NextObserver<string>;
     @Output() addTodo: EventEmitter<string>;
     @Destroy() destroy$;
 
@@ -26,7 +27,7 @@ export class NewTodoComponent implements OnInit, OnDestroy {
         this.keyUpEnter$ = new Subject<void>();
         this.addTodo = new EventEmitter<string>();
         this.addTodoObserver = {
-            next: ([_, value]) => {
+            next: value => {
                 this.addTodo.emit(value);
                 this.textField.reset();
             }
@@ -37,7 +38,8 @@ export class NewTodoComponent implements OnInit, OnDestroy {
             .pipe(
                 takeUntil(this.destroy$),
                 filter(() => this.shouldAddTodo()),
-                withLatestFrom(this.newTodos$)
+                withLatestFrom(this.newTodos$),
+                mapPosition(1)
             )
             .subscribe(this.addTodoObserver);
     }

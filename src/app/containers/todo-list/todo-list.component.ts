@@ -1,12 +1,12 @@
 import { Component, OnDestroy, OnInit } from '@angular/core';
 import { FormControl } from '@angular/forms';
-import { ActivatedRoute } from '@angular/router';
-import { FilterType, TodoUpdate } from '../../utils';
+import { ActivatedRoute, Params } from '@angular/router';
+import { mapUndefinedValue, TodoUpdate } from '../../utils';
 import { Destroy } from 'ngx-reactivetoolkit';
-import { takeUntil } from 'rxjs/operators';
+import { pluck, takeUntil } from 'rxjs/operators';
 import { Todo } from '../../models';
 import { FacadeService } from '../../services';
-import { Observable } from 'rxjs';
+import { NextObserver, Observable } from 'rxjs';
 
 @Component({
     selector: 'app-todo-list',
@@ -14,45 +14,35 @@ import { Observable } from 'rxjs';
 })
 export class TodoListComponent implements OnInit, OnDestroy {
     todos$: Observable<Todo[]>;
+    params$: Observable<Params>;
     checkField: FormControl;
     @Destroy() destroy$;
+    routeObserver: NextObserver<string>;
 
     constructor(private route: ActivatedRoute, public facadeService: FacadeService) {
         this.checkField = new FormControl();
-        this.readParams();
         this.todos$ = this.facadeService.todos$;
+        this.params$ = this.route.params;
+        this.routeObserver = {
+            next: filter => this.setFilter(filter)
+        };
     }
 
     ngOnInit() {
         this.facadeService.stateCompleted$.pipe(takeUntil(this.destroy$)).subscribe(status => {
             this.checkField.setValue(status);
         });
+        this.params$
+            .pipe(
+                takeUntil(this.destroy$),
+                pluck('filter'),
+                mapUndefinedValue('')
+            )
+            .subscribe(this.routeObserver);
     }
 
     handleToggleAll() {
         this.facadeService.completedAll();
-    }
-
-    private setFilter(value: string) {
-        switch (value) {
-            case 'active': {
-                this.facadeService.setFilter(FilterType.SHOW_ACTIVE);
-                break;
-            }
-            case 'completed': {
-                this.facadeService.setFilter(FilterType.SHOW_COMPLETED);
-                break;
-            }
-            default: {
-                this.facadeService.setFilter(FilterType.SHOW_ALL);
-                break;
-            }
-        }
-    }
-    private readParams() {
-        this.route.params.pipe(takeUntil(this.destroy$)).subscribe(params => {
-            this.setFilter(params.filter);
-        });
     }
 
     handleUpdateTodo(todoPartial: TodoUpdate) {
@@ -63,8 +53,12 @@ export class TodoListComponent implements OnInit, OnDestroy {
         this.facadeService.deleteTodo(id);
     }
 
-    handleToogleTodo(todo: Todo) {
+    handleToggleTodo(todo: Todo) {
         this.facadeService.toggleTodo(todo);
+    }
+
+    setFilter(filter: string): void {
+        this.facadeService.setFilter(filter);
     }
 
     ngOnDestroy(): void {}

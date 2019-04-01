@@ -11,6 +11,7 @@ import { NgxsReduxDevtoolsPluginModule } from '@ngxs/devtools-plugin';
 import { TodoState } from './store/todo.state';
 import { NgxsEmitPluginModule } from '@ngxs-labs/emitter';
 import { NgxsDispatchPluginModule } from '@ngxs-labs/dispatch-decorator';
+import { environment } from '../environments/environment';
 const routes: Routes = [
     { path: '', component: TodoListComponent, pathMatch: 'full' },
     { path: ':filter', component: TodoListComponent }
@@ -22,7 +23,7 @@ const routes: Routes = [
         BrowserModule,
         ReactiveFormsModule,
         RouterModule.forRoot(routes),
-        NgxsModule.forRoot([TodoState]),
+        NgxsModule.forRoot([TodoState], { developmentMode: !environment.production }),
         NgxsReduxDevtoolsPluginModule.forRoot({
             disabled: false
         }),

@@ -11,9 +11,9 @@ import {
 } from '@angular/core';
 import { FormControl, Validators } from '@angular/forms';
 import { Todo } from '../../models';
-import { TodoUpdate } from '../../utils';
+import { mapPosition, TodoUpdate } from '../../utils';
 import { Destroy } from 'ngx-reactivetoolkit';
-import { delay, map, startWith, takeUntil, tap, withLatestFrom } from 'rxjs/operators';
+import { delay, startWith, takeUntil, tap, withLatestFrom } from 'rxjs/operators';
 import { Observable, Subject } from 'rxjs';
 import { filter } from 'rxjs/internal/operators/filter';
 import { NextObserver } from 'rxjs/src/internal/types';
@@ -39,7 +39,7 @@ export class TodoComponent implements OnInit, OnDestroy {
     @Output() deleteTodo: EventEmitter<number>;
     @Output() toggleTodo: EventEmitter<Todo>;
     @Destroy() destroy$;
-    isValidUpdate = value => (value ? true : false);
+    isValidUpdate = value => !!value;
 
     constructor() {
         this.updateInputControl = new FormControl('', [Validators.required]);
@@ -70,7 +70,7 @@ export class TodoComponent implements OnInit, OnDestroy {
                 withLatestFrom(this.editInputValues$),
                 tap(() => this.disableEditingMode()),
                 filter(([_, value]) => this.isValidUpdate(value)),
-                map(([_, value]) => value)
+                mapPosition(1)
             )
             .subscribe(this.updateTodoObserver);
         this.activeEditMode$
